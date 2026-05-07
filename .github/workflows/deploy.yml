@@ -4,17 +4,24 @@ on:
   push:
     paths:
       - 'data/daily/**'
-      - 'web/**'
-      - 'scripts/**'
+      - 'web/index.html'
+      - 'scripts/data_export.py'
   workflow_dispatch:
 
 permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: pages
+  allow-cancel-in-progress: false
+
 jobs:
-  deploy:
+  build-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -22,16 +29,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Export data
-        run: python3 scripts/data_export.py
-
-      - name: Restore static index.html
+      - name: Export data and build
         run: |
-          # Use the original template (with placeholder), not the locally-injected version
-          git checkout -- web/index.html 2>/dev/null || true
-
-      - name: Inject data into HTML
-        run: |
+          python3 scripts/data_export.py
+          # Inject data.json into HTML
           python3 -c "
           import json
           with open('web/data.json','r') as f:
@@ -47,4 +48,5 @@ jobs:
         with:
           path: web
 
-      - uses: actions/deploy-pages@v4
+      - id: deployment
+        uses: actions/deploy-pages@v4

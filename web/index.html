@@ -11,51 +11,83 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #0f1117; color: #e0e0e0; padding: 20px;
         }
+        #lock-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f1117; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 16px;
+        }
+        #lock-screen.hidden { display: none; }
+        #lock-screen .dragon { font-size: 56px; }
+        #lock-screen h2 { color: #4fc3f7; font-size: 22px; letter-spacing: 1px; }
+        #lock-screen input {
+            padding: 12px 20px; border-radius: 8px; border: 1px solid #2a2d33;
+            background: #1a1d23; color: #e0e0e0; font-size: 16px; width: 240px;
+            outline: none; text-align: center;
+        }
+        #lock-screen input:focus { border-color: #4fc3f7; }
+        #lock-screen button {
+            padding: 10px 40px; border-radius: 8px; border: none;
+            background: linear-gradient(135deg, #4fc3f7, #0288d1); color: #fff;
+            font-size: 15px; font-weight: 600; cursor: pointer; letter-spacing: 1px;
+        }
+        #lock-screen button:hover { opacity: 0.9; }
+        #lock-screen .error { color: #ef5350; font-size: 13px; min-height: 20px; }
         .header { text-align: center; padding: 20px 0; }
-        .header h1 { font-size: 28px; color: #4fc3f7; }
-        .header .subtitle { color: #888; margin-top: 8px; }
+        .header h1 { font-size: 26px; color: #4fc3f7; font-weight: 600; }
+        .header .subtitle { color: #666; margin-top: 6px; font-size: 13px; }
         .stats-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px; margin: 20px 0;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px; margin: 20px 0;
         }
         .stat-card {
-            background: #1a1d23; border-radius: 12px; padding: 20px; text-align: center;
-            border: 1px solid #2a2d33;
+            background: #1a1d23; border-radius: 12px; padding: 18px; text-align: center;
+            border: 1px solid #2a2d33; transition: border-color 0.2s;
         }
-        .stat-card .value { font-size: 32px; font-weight: bold; color: #4fc3f7; }
-        .stat-card .label { font-size: 13px; color: #888; margin-top: 4px; }
-        .stat-card .delta { font-size: 13px; margin-top: 4px; }
+        .stat-card:hover { border-color: #4fc3f7; }
+        .stat-card .value { font-size: 30px; font-weight: 700; color: #4fc3f7; }
+        .stat-card .label { font-size: 12px; color: #777; margin-top: 4px; }
+        .stat-card .delta { font-size: 12px; margin-top: 6px; }
         .delta.down { color: #66bb6a; }
         .delta.up { color: #ef5350; }
-        .delta.flat { color: #888; }
+        .delta.flat { color: #777; }
         .chart-row {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0;
         }
         @media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
         .chart-box {
             background: #1a1d23; border-radius: 12px; padding: 16px;
             border: 1px solid #2a2d33;
         }
-        .chart-box h3 { font-size: 16px; color: #aaa; margin-bottom: 12px; }
-        .chart { width: 100%; height: 300px; }
-        .chart-tall { height: 400px; }
+        .chart-box h3 { font-size: 14px; color: #999; margin-bottom: 10px; font-weight: 500; }
+        .chart { width: 100%; height: 280px; }
+        .chart-tall { height: 360px; }
         .section-title { 
-            font-size: 20px; color: #4fc3f7; margin: 30px 0 10px; 
-            padding-left: 12px; border-left: 3px solid #4fc3f7;
+            font-size: 18px; color: #e0e0e0; margin: 28px 0 10px; 
+            padding-left: 12px; border-left: 3px solid #4fc3f7; font-weight: 600;
         }
         .table-wrapper { 
             background: #1a1d23; border-radius: 12px; padding: 16px;
             border: 1px solid #2a2d33; overflow-x: auto;
         }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        th { text-align: left; padding: 10px; color: #888; border-bottom: 1px solid #2a2d33; }
-        td { padding: 10px; border-bottom: 1px solid #1e2127; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { text-align: left; padding: 10px 8px; color: #666; border-bottom: 1px solid #2a2d33; font-weight: 500; }
+        td { padding: 10px 8px; border-bottom: 1px solid #1e2127; }
         .mood-good { color: #66bb6a; }
         .mood-bad { color: #ef5350; }
         .mood-mid { color: #ffa726; }
+        footer { text-align: center; color: #444; padding: 30px 0; font-size: 12px; }
     </style>
 </head>
 <body>
+    <div id="lock-screen">
+        <div class="dragon">🐉</div>
+        <h2>12周减脂仪表盘</h2>
+        <input type="password" id="pwd-input" placeholder="输入访问密码" autocomplete="off">
+        <button onclick="unlock()">进入</button>
+        <div class="error" id="pwd-error"></div>
+    </div>
+
     <div class="header">
         <h1>🐉 12周减脂仪表盘</h1>
         <div class="subtitle" id="planRange"></div>
@@ -100,12 +132,118 @@
         </table>
     </div>
 
-    <div style="text-align:center; color:#555; padding: 30px 0;">
-        数据由小龙自动更新 · Powered by ECharts
-    </div>
+    <footer>数据由小龙自动更新 · Powered by ECharts</footer>
 
     <script>
+        // === Password ===
+        // Password is hashed client-side. To change password, update PWD_HASH.
+        // Current password: xiaolong2026
+        const PWD_HASH = '1bf49410';
+        function simpleHash(s) {
+            let h = 5381;
+            for (let i = 0; i < s.length; i++) {
+                h = ((h << 5) + h + s.charCodeAt(i)) & 0xffffffff;
+            }
+            return (h >>> 0).toString(16);
+        }
+        function unlock() {
+            const pwd = document.getElementById('pwd-input').value;
+            if (simpleHash(pwd) === PWD_HASH) {
+                document.getElementById('lock-screen').classList.add('hidden');
+                sessionStorage.setItem('fat_unlock', '1');
+            } else {
+                document.getElementById('pwd-error').textContent = '密码错误';
+                document.getElementById('pwd-input').value = '';
+            }
+        }
+        document.getElementById('pwd-input').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
+        if (sessionStorage.getItem('fat_unlock') === '1') {
+            document.getElementById('lock-screen').classList.add('hidden');
+        }
+
+        // === Charts ===
         const DATA = __DATA_PLACEHOLDER__;
+        
+        function renderStats(data) {
+            const r = data.records;
+            if (!r.length) { document.getElementById('statsGrid').innerHTML = '<div class="stat-card"><div class="value">—</div><div class="label">暂无数据</div></div>'; return; }
+            const latest = r[r.length - 1];
+            const weights = r.filter(x => x.weight).map(x => x.weight);
+            const totalChange = (weights[weights.length-1] - weights[0]).toFixed(1);
+            const remaining = (weights[weights.length-1] - 100).toFixed(1);
+            const trainingDone = r.filter(x => x.training === '完成').length;
+            const rate = Math.round(trainingDone / r.length * 100);
+            const binges = r.filter(x => x.binge === '是').length;
+            const cc = totalChange < 0 ? 'down' : totalChange > 0 ? 'up' : 'flat';
+            const cs = totalChange > 0 ? '+' : '';
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="value">${latest.weight||'—'}</div><div class="label">当前体重 kg</div><div class="delta ${cc}">${cs}${totalChange} kg</div></div>
+                <div class="stat-card"><div class="value">${latest.avg7||'—'}</div><div class="label">7日平均 kg</div></div>
+                <div class="stat-card"><div class="value">${r.length}</div><div class="label">打卡天数</div></div>
+                <div class="stat-card"><div class="value">${rate}%</div><div class="label">训练完成率</div></div>
+                <div class="stat-card"><div class="value">${binges}</div><div class="label">暴食次数</div></div>
+                <div class="stat-card"><div class="value">${remaining}</div><div class="label">距目标 kg</div></div>`;
+            document.getElementById('planRange').textContent = `${data.startDate} 至 ${data.endDate} · 第${data.currentWeek}周`;
+        }
+        
+        function lineChart(id, dates, values, color, gradient) {
+            const c = echarts.init(document.getElementById(id));
+            c.setOption({
+                backgroundColor: 'transparent', tooltip: { trigger: 'axis' },
+                grid: { left: 48, right: 16, top: 16, bottom: 28 },
+                xAxis: { type: 'category', data: dates, axisLine: { lineStyle: { color: '#2a2d33' } }, axisLabel: { color: '#666', fontSize: 11 } },
+                yAxis: { type: 'value', axisLine: { show: false }, splitLine: { lineStyle: { color: '#1e2127' } }, axisLabel: { color: '#666', fontSize: 11 } },
+                series: [{ type: 'line', data: values, smooth: true, lineStyle: { color, width: 2.5 },
+                    areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:gradient},{offset:1,color:'rgba(0,0,0,0)'}])},
+                    symbol: 'circle', symbolSize: 5, itemStyle: { color } }]
+            });
+            window.addEventListener('resize', () => c.resize());
+        }
+
+        function renderCharts(data) {
+            const r = data.records;
+            if (!r.length) return;
+            const dates = r.map(x => x.date.slice(5));
+            lineChart('weightChart', dates, r.map(x=>x.weight), '#4fc3f7', 'rgba(79,195,247,0.25)');
+            lineChart('avg7Chart', dates, r.map(x=>x.avg7), '#66bb6a', 'rgba(102,187,106,0.25)');
+            
+            // Mood + Anxiety
+            const mc = echarts.init(document.getElementById('moodChart'));
+            mc.setOption({
+                backgroundColor: 'transparent', tooltip: { trigger: 'axis' },
+                legend: { data: ['精神状态','焦虑'], textStyle: { color: '#666' }, top: 4 },
+                grid: { left: 36, right: 16, top: 36, bottom: 28 },
+                xAxis: { type: 'category', data: dates, axisLine: { lineStyle: { color: '#2a2d33' } }, axisLabel: { color: '#666', fontSize: 11 } },
+                yAxis: { type: 'value', max: 10, axisLine: { show: false }, splitLine: { lineStyle: { color: '#1e2127' } }, axisLabel: { color: '#666', fontSize: 11 } },
+                series: [
+                    { name: '精神状态', type: 'line', data: r.map(x=>x.mood), smooth: true, lineStyle: { color: '#66bb6a', width: 2 }, itemStyle: { color: '#66bb6a' } },
+                    { name: '焦虑', type: 'line', data: r.map(x=>x.anxiety), smooth: true, lineStyle: { color: '#ef5350', width: 2 }, itemStyle: { color: '#ef5350' } }
+                ]
+            });
+            window.addEventListener('resize', () => mc.resize());
+
+            // Training pie
+            const done = r.filter(x => x.training === '完成').length;
+            const tc = echarts.init(document.getElementById('trainingChart'));
+            tc.setOption({
+                backgroundColor: 'transparent', tooltip: { trigger: 'item' },
+                series: [{ type: 'pie', radius: ['42%','68%'],
+                    data: [{ value: done, name: '已完成', itemStyle: { color: '#66bb6a' } }, { value: r.length - done, name: '未完成', itemStyle: { color: '#ef5350' } }],
+                    label: { color: '#888', formatter: '{b}: {c}天 ({d}%)', fontSize: 12 }
+                }]
+            });
+            window.addEventListener('resize', () => tc.resize());
+
+            // Table
+            document.getElementById('tableBody').innerHTML = r.map(x => {
+                const mc2 = x.mood >= 7 ? 'mood-good' : x.mood <= 4 ? 'mood-bad' : 'mood-mid';
+                const ac = x.anxiety <= 4 ? 'mood-good' : x.anxiety >= 7 ? 'mood-bad' : 'mood-mid';
+                return `<tr><td>${x.date.slice(5)}</td><td>${x.weight||'—'}</td><td>${x.sleep||'—'}</td><td class="${mc2}">${x.mood||'—'}</td><td class="${ac}">${x.anxiety||'—'}</td><td>${x.training==='完成'?'✅':'❌'}</td><td>${x.binge==='是'?'⚠️':'—'}</td><td>${x.bowel||'—'}</td></tr>`;
+            }).join('');
+        }
+
+        renderStats(DATA);
+        renderCharts(DATA);
     </script>
 </body>
 </html>
