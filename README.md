@@ -1,0 +1,1 @@
+# 12周减脂计划\n\n张小厨的12周强执行减脂项目。\n\n## Prompts\n\n- `daily-plan.md` - 每日完整方案（营养师+医生+训练师三合一）\n- `doctor-context.md` - 医生/营养师上下文\n- `daily-checkin.md` - 每日打卡模板\n- `weekly-review.md` - 每周复盘\n- `quick-daily.md` - 快速每日调整
