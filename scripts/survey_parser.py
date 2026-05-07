@@ -39,22 +39,23 @@ FIELDS = [
 ]
 
 def parse_reply(text):
-    """解析用户的逐行回复"""
+    """解析用户的逐行回复 - 严格按行顺序对应17个字段"""
     lines = [l.strip() for l in text.strip().split("\n") if l.strip()]
     
-    # 过滤掉序号前缀（如 "1. 127.8"）
+    # 过滤掉序号前缀（如 "1. xxx"）
+    # 但要区分序号和数字内容：序号是1-17开头，后面跟.或、
     cleaned = []
     for line in lines:
-        # 去掉 "数字." 前缀
-        m = re.match(r'^\d+[\.\、\)]\s*(.*)', line)
+        m = re.match(r'^([1-9]|1[0-7])[\.\、\)\]]\s+(.*)', line)
         if m:
-            cleaned.append(m.group(1).strip())
+            cleaned.append(m.group(2).strip())
         else:
             cleaned.append(line)
     
     result = {}
     for i, (key, label, unit) in enumerate(FIELDS):
-        result[key] = cleaned[i] if i < len(cleaned) else "未填写"
+        val = cleaned[i] if i < len(cleaned) else "未填写"
+        result[key] = val
     
     return result
 
