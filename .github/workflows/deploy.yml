@@ -2,18 +2,12 @@ name: Deploy Dashboard
 
 on:
   push:
-    paths:
-      - 'data/daily/**'
-      - 'web/index.html'
-      - 'scripts/data_export.py'
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   pages: write
   id-token: write
-
-concurrency:
-  group: pages
 
 jobs:
   build-deploy:
@@ -28,19 +22,17 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Export data and build
+      - name: Build
+        run: python3 scripts/data_export.py
+
+      - name: Inject data
         run: |
-          python3 scripts/data_export.py
-          # Inject data.json into HTML
           python3 -c "
           import json
-          with open('web/data.json','r') as f:
-              data = json.load(f)
-          with open('web/index.html','r') as f:
-              html = f.read()
+          with open('web/data.json','r') as f: data = json.load(f)
+          with open('web/index.html','r') as f: html = f.read()
           html = html.replace('__DATA_PLACEHOLDER__', json.dumps(data, ensure_ascii=False))
-          with open('web/index.html','w') as f:
-              f.write(html)
+          with open('web/index.html','w') as f: f.write(html)
           "
 
       - uses: actions/upload-pages-artifact@v3
