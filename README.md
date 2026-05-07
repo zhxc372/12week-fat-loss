@@ -4,8 +4,15 @@
 
 ## 计划文档
 
-- [12周执行手册（完整版）](docs/plan-full.txt) — 饮食、训练、外食规则、采购清单、风险红线
-- [皮质醇与有氧优化指南](docs/cortisol-and-cardio-guide.md) — 有氧强度分层、训练调整规则、六条硬规则
+### AI速查版（每次生成方案时读取这些）
+- [饮食规则速查](docs/diet-rules.md) — 每日目标、食材库、四套菜单、外食规则、防崩指南
+- [训练系统速查](docs/training-system.md) — 一周安排、力量A/B（健身房+居家）、禁止动作
+- [安全与皮质醇速查](docs/safety-and-cortisol.md) — 状态判断、六条硬规则、安全红线、纠偏规则
+
+### 完整版（参考用）
+- [12周执行手册PDF](docs/12周减脂饮食训练执行手册.pdf)
+- [12周执行手册文本](docs/plan-full.txt)
+- [皮质醇与有氧优化指南](docs/cortisol-and-cardio-guide.md)
 
 ## 打卡模板
 
