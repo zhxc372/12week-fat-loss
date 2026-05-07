@@ -1,0 +1,50 @@
+name: Deploy Dashboard
+
+on:
+  push:
+    paths:
+      - 'data/daily/**'
+      - 'web/**'
+      - 'scripts/**'
+  workflow_dispatch:
+
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Export data
+        run: python3 scripts/data_export.py
+
+      - name: Restore static index.html
+        run: |
+          # Use the original template (with placeholder), not the locally-injected version
+          git checkout -- web/index.html 2>/dev/null || true
+
+      - name: Inject data into HTML
+        run: |
+          python3 -c "
+          import json
+          with open('web/data.json','r') as f:
+              data = json.load(f)
+          with open('web/index.html','r') as f:
+              html = f.read()
+          html = html.replace('__DATA_PLACEHOLDER__', json.dumps(data, ensure_ascii=False))
+          with open('web/index.html','w') as f:
+              f.write(html)
+          "
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+      - uses: actions/deploy-pages@v4

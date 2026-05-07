@@ -1,0 +1,28 @@
+{
+  "startDate": "2026-05-08",
+  "endDate": "2026-07-31",
+  "currentWeek": 1,
+  "totalDays": 84,
+  "records": [
+    {
+      "date": "2026-05-07",
+      "weight": 127.8,
+      "avg7": 126.5,
+      "waist": "未测",
+      "sleep": "好",
+      "bowel": "正常",
+      "night_eat": "否",
+      "mood": 8.0,
+      "anxiety": 5.0,
+      "protein_control": "未进食",
+      "binge": "否",
+      "training": "未完成",
+      "problem": "睡眠过多",
+      "gym": "能",
+      "swim": "能"
+    }
+  ],
+  "profile": {
+    "targetWeight": 100
+  }
+}

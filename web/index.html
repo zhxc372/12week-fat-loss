@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12周减脂仪表盘</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f1117; color: #e0e0e0; padding: 20px;
+        }
+        .header { text-align: center; padding: 20px 0; }
+        .header h1 { font-size: 28px; color: #4fc3f7; }
+        .header .subtitle { color: #888; margin-top: 8px; }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px; margin: 20px 0;
+        }
+        .stat-card {
+            background: #1a1d23; border-radius: 12px; padding: 20px; text-align: center;
+            border: 1px solid #2a2d33;
+        }
+        .stat-card .value { font-size: 32px; font-weight: bold; color: #4fc3f7; }
+        .stat-card .label { font-size: 13px; color: #888; margin-top: 4px; }
+        .stat-card .delta { font-size: 13px; margin-top: 4px; }
+        .delta.down { color: #66bb6a; }
+        .delta.up { color: #ef5350; }
+        .delta.flat { color: #888; }
+        .chart-row {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;
+        }
+        @media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
+        .chart-box {
+            background: #1a1d23; border-radius: 12px; padding: 16px;
+            border: 1px solid #2a2d33;
+        }
+        .chart-box h3 { font-size: 16px; color: #aaa; margin-bottom: 12px; }
+        .chart { width: 100%; height: 300px; }
+        .chart-tall { height: 400px; }
+        .section-title { 
+            font-size: 20px; color: #4fc3f7; margin: 30px 0 10px; 
+            padding-left: 12px; border-left: 3px solid #4fc3f7;
+        }
+        .table-wrapper { 
+            background: #1a1d23; border-radius: 12px; padding: 16px;
+            border: 1px solid #2a2d33; overflow-x: auto;
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th { text-align: left; padding: 10px; color: #888; border-bottom: 1px solid #2a2d33; }
+        td { padding: 10px; border-bottom: 1px solid #1e2127; }
+        .mood-good { color: #66bb6a; }
+        .mood-bad { color: #ef5350; }
+        .mood-mid { color: #ffa726; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🐉 12周减脂仪表盘</h1>
+        <div class="subtitle" id="planRange"></div>
+    </div>
+
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <div class="section-title">体重趋势</div>
+    <div class="chart-row">
+        <div class="chart-box">
+            <h3>每日体重 (kg)</h3>
+            <div class="chart chart-tall" id="weightChart"></div>
+        </div>
+        <div class="chart-box">
+            <h3>7日平均体重</h3>
+            <div class="chart chart-tall" id="avg7Chart"></div>
+        </div>
+    </div>
+
+    <div class="section-title">身体状态</div>
+    <div class="chart-row">
+        <div class="chart-box">
+            <h3>精神状态 & 焦虑评分</h3>
+            <div class="chart" id="moodChart"></div>
+        </div>
+        <div class="chart-box">
+            <h3>训练完成率</h3>
+            <div class="chart" id="trainingChart"></div>
+        </div>
+    </div>
+
+    <div class="section-title">详细记录</div>
+    <div class="table-wrapper">
+        <table id="detailTable">
+            <thead>
+                <tr>
+                    <th>日期</th><th>体重</th><th>睡眠</th><th>状态</th>
+                    <th>焦虑</th><th>训练</th><th>暴食</th><th>排便</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <div style="text-align:center; color:#555; padding: 30px 0;">
+        数据由小龙自动更新 · Powered by ECharts
+    </div>
+
+    <script>
+        const DATA = __DATA_PLACEHOLDER__;
+    </script>
+</body>
+</html>
